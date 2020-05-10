@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 映射文件 -->
+<mapper namespace="com.baidu.mapper.CartMapper">
+        <!-- 查询商品信息列表 -->
+        <select id="getGoodsList" resultType="com.baidu.entity.Goods">
+                select gid,gname,gcount,gprice from a_goods
+        </select>
+        
+        <!-- 向购物车添加商品gid及购物车里商品数量 -->
+        <insert id="insertGoods">
+                insert into a_cart(gid,buyCount) values(#{gid},#{buyCount})
+        </insert>
+        
+        <!-- 根据商品gid查询购物车里商品gid -->
+        <select id="getCartById" resultType="com.baidu.entity.Cart">
+                select gid from a_cart where gid = #{gid}
+        </select>
+        
+        <!-- 修改购物车里商品数量(增加) -->
+        <update id="updateGoods">
+                update a_cart set buyCount=buyCount+#{buyCount} where gid=#{gid}
+        </update>
+        
+        <!-- 修改商品信息列表  商品数量(减少) -->
+        <update id="changeGoodsCount">
+                update a_goods set gcount=gcount-#{buyCount} where gid=#{gid}
+        </update>
+        
+        <!-- 查询购物车信息列表   商品名称价格数量+总价 -->
+        <select id="getCartList" resultType="com.baidu.entity.Cart">
+                select t1.gid,t1.gname,t1.gprice,t2.buyCount,(t1.gprice*t2.buyCount) as sum
+                from a_goods t1 right join a_cart t2 on t1.gid=t2.gid
+        </select>
+        
+        <!-- 根据购物车里商品gid移除购物车内的商品 -->
+        <delete id="deleteGoods">
+                delete from a_cart where gid=#{gid}
+        </delete>
+        
+        <!-- 修改商品信息列表  商品数量(增加) -->
+        <update id="updateGoodsCount">
+                update a_goods set gcount=gcount+#{buyCount} where gid=#{gid}
+        </update>
+</mapper>
