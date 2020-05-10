@@ -20,7 +20,7 @@ public class CartController {
 	@Resource
 	private ICartService cartService;
 	
-	//查询商品信息列表
+	//查询商品信息列表123
 	@RequestMapping("getGoodsList")
 	public String getGoodsList(HttpServletRequest request){
 		List<Goods> goodsList = cartService.getGoodsList();
